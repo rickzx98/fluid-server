@@ -18,9 +18,14 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
         express_domainApi,
         express_enable_cors,
         express_cors,
+        express_static,
         node_env
     }) => {
         app = express();
+        console.log("express_static", express_static());
+        if (express_static) {
+            app.use(express.static(express_static()));
+        }
         app.use(morgan(node_env()));
         app.use(bodyParser.urlencoded({
             extended: true
@@ -43,6 +48,7 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
     .spec("node_env", {
         default: NODE_ENV
     })
+    .spec("express_static")
     .spec("express_domainApi")
     .spec("express_enable_cors", { default: false })
     .spec("express_cors", {
