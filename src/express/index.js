@@ -1,1 +1,1 @@
-require("./config");
+export { ExpressApp } from "./config";

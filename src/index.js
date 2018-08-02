@@ -5,7 +5,7 @@ require("./logger/");
 require("./server/");
 require("./cluster/");
 require("./action/");
-require("./express");
+export { ExpressApp } from "./express";
 
 import * as _FluidInfo from "./fluid.info";
 
@@ -35,5 +35,3 @@ export class FluidServer {
 }
 
 export const FluidInfo = _FluidInfo;
-
-console.log(FluidInfo);

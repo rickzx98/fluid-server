@@ -11,8 +11,8 @@ import {
 import { FluidFunc, SocketIO, bodyParser, cookieParser, cors, express, fs, http, httpProxy, https, morgan, multipart } from "../imports";
 
 const NODE_ENV = process.env.NODE_ENV || "development";
-let app;
-
+const app = express();
+export const ExpressApp = app;
 FluidFunc.create(EXPRESS_SERVER_CONFIG)
     .onStart(({
         express_domainApi,
@@ -21,7 +21,6 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
         express_static,
         node_env
     }) => {
-        app = express();
         console.log("express_static", express_static());
         if (express_static) {
             app.use(express.static(express_static()));
