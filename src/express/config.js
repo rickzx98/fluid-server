@@ -185,7 +185,7 @@ FluidFunc.create(EXPRESS_SERVER_SOCKET_IO_LISTENER)
         io.on("connection", (socket) => {
             FluidFunc.create(EXPRESS_SERVER_EMIT_EVENT)
                 .onStart(({ event, data }) => {
-                    socket.emit(event, data);
+                    socket.emit(event(), data());
                 })
                 .spec("event", {
                     require: true
