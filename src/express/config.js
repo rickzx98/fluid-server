@@ -209,7 +209,7 @@ FluidFunc.create(EXPRESS_SERVER_SOCKET_IO_LISTENER)
         });
     })
     .spec("express_port", {
-        default: 80
+        default: 8080
     })
     .spec("express_host", {
         default: "0.0.0.0"
