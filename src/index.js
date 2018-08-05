@@ -10,6 +10,7 @@ export { ExpressApp } from "./express";
 import * as _FluidInfo from "./fluid.info";
 
 import { FluidFunc } from "./imports";
+import path from "path";
 
 export class FluidServer {
     constructor() {
@@ -24,6 +25,7 @@ export class FluidServer {
         return this;
     }
     start() {
+        console.log(this.config);
         return new Promise((resolve, reject) => {
             FluidFunc.start(this.services, this.config).then(result => {
                 resolve({ result });
