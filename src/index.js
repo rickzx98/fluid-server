@@ -1,12 +1,16 @@
 import { ClusterConfig } from "./cluster";
 import { ExpressConfig } from "./express";
 import { FluidFunc } from "./imports";
+import { LoggerConfig } from "./logger";
 import { MongoConfig } from "./database";
 
 export default class FluidServer {
     constructor() {
         this.config = {};
         this.services = [];
+    }
+    logger(config) {
+        return new LoggerConfig(config, this).server;
     }
     cluster(config) {
         return new ClusterConfig(config, this).server;
