@@ -1,21 +1,21 @@
-require("./clients/");
-require("./request/");
-require("./database/");
-require("./logger/");
-require("./server/");
-require("./cluster/");
-require("./action/");
-export { ExpressApp } from "./express";
-
-import * as _FluidInfo from "./fluid.info";
-
+import { ClusterConfig } from "./cluster";
+import { ExpressConfig } from "./express";
 import { FluidFunc } from "./imports";
-import path from "path";
+import { MongoConfig } from "./database";
 
-export class FluidServer {
+export default class FluidServer {
     constructor() {
         this.config = {};
         this.services = [];
+    }
+    cluster(config) {
+        return new ClusterConfig(config, this).server;
+    }
+    mongodb(config) {
+        return new MongoConfig(config, this).server;
+    }
+    express(config) {
+        return new ExpressConfig(config, this);
     }
     use(service, config) {
         this.services.push(service);
@@ -25,7 +25,6 @@ export class FluidServer {
         return this;
     }
     start() {
-        console.log(this.config);
         return new Promise((resolve, reject) => {
             FluidFunc.start(this.services, this.config).then(result => {
                 resolve({ result });
@@ -35,5 +34,3 @@ export class FluidServer {
         });
     }
 }
-
-export const FluidInfo = _FluidInfo;

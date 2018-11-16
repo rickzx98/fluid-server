@@ -25,6 +25,8 @@ FluidFunc.create(CLUSTER_CONFIG).onStart(({ cluster_max_cpu }) => {
     return {
         server_cluster: true
     };
+}).spec("isMaster", {
+    default: false
 }).spec("cluster_max_cpu", {
     default: os.cpus().length
 });
