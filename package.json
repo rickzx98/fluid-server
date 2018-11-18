@@ -1,7 +1,7 @@
 {
   "name": "fluid-server",
   "version": "0.0.7",
-  "description": "In Memory storage manager",
+  "description": "Fluid Server",
   "main": "dist/index.js",
   "scripts": {
     "babel-node": "node_modules/.bin/babel-node",
@@ -14,7 +14,7 @@
     "test": "npm run compile && mocha --compilers js:babel-core/register"
   },
   "keywords": [
-    "fluid-storage"
+    "fluid-server"
   ],
   "author": "Jerico de Guzman",
   "license": "MIT",
