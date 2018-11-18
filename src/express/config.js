@@ -38,14 +38,6 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
         app.use(bodyParser.json({
             type: 'application/vnd.api+json'
         }));
-        app.get("/normal", function (req, res) {
-            res.send("normal");
-        });
-        if (express_domainApi) {
-            app.get('/api', (req, res) => {
-                res.status(200).send(express_domainApi());
-            });
-        }
         if (express_apis) {
             const apis = express_apis();
             Object.keys(apis).forEach(action => {
@@ -60,7 +52,6 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
         default: NODE_ENV
     })
     .spec("express_static")
-    .spec("express_domainApi")
     .spec("express_enable_cors", { default: false })
     .spec("express_cors", {
         default: {
