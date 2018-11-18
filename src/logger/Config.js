@@ -3,7 +3,7 @@ import { LOGGER_CONFIG, LOG_ERROR, LOG_INFO, LOG_WARN } from '../fluid.info';
 
 let loggerName;
 
-export const Logger = (loggerName) => {
+const Logger = (loggerName) => {
     return log4js.getLogger(loggerName);
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "fluid-server",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "In Memory storage manager",
   "main": "dist/index.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "fluid-func": "^0.6.0",
     "http-proxy": "^1.17.0",
     "log4js": "^3.0.2",
     "mongoose": "^5.2.4",

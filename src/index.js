@@ -9,6 +9,16 @@ export default class FluidServer {
         this.config = {};
         this.services = [];
     }
+    static createServer() {
+        return new FluidServer();
+    }
+    static createLogger(loggerName) {
+        return {
+            info: (logInfo) => LoggerConfig.logInfo(logInfo, loggerName),
+            error: (logError) => LoggerConfig.logError(logError, loggerName),
+            warn: (logWarn) => LoggerConfig.logWarn(logWarn, loggerName)
+        };
+    }
     logger(config) {
         return new LoggerConfig(config, this).server;
     }

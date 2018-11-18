@@ -64,6 +64,7 @@ const MongoConnect = (param, tries, done) => {
                     MongoConnect(param, tries);
                 }, 5000);
             } else {
+                console.log(`Connected to mongodb ${param.mongo_url()}`);
                 done();
             }
         });

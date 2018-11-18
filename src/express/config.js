@@ -12,17 +12,17 @@ import { FluidFunc, SocketIO, bodyParser, cookieParser, cors, express, fs, http,
 
 const NODE_ENV = process.env.NODE_ENV || "development";
 const app = express();
-export const ExpressApp = app;
 FluidFunc.create(EXPRESS_SERVER_CONFIG)
     .onStart(({
         express_domainApi,
         express_enable_cors,
         express_cors,
         express_static,
+        express_apis,
         node_env
     }) => {
-        console.log("express_static", express_static());
         if (express_static) {
+            console.log("express_static", express_static());
             app.use(express.static(express_static()));
         }
         app.use(morgan(node_env()));
@@ -38,12 +38,24 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
         app.use(bodyParser.json({
             type: 'application/vnd.api+json'
         }));
+        app.get("/normal", function (req, res) {
+            res.send("normal");
+        });
         if (express_domainApi) {
             app.get('/api', (req, res) => {
                 res.status(200).send(express_domainApi());
             });
         }
+        if (express_apis) {
+            const apis = express_apis();
+            Object.keys(apis).forEach(action => {
+                expressMethod(express_apis(action), action);
+            });
+        }
+        console.log("Finished express config");
     })
+    .strict()
+    .spec("express_apis")
     .spec("node_env", {
         default: NODE_ENV
     })
@@ -58,7 +70,55 @@ FluidFunc.create(EXPRESS_SERVER_CONFIG)
             optionsSuccessStatus: 204
         }
     });
-
+function createExpressRequest(request) {
+    return {
+        params: request.params,
+        body: request.body,
+        cookies: request.cookies,
+        hostname: request.hostname,
+        ip: request.ip,
+        ips: request.ips,
+        method: request.method,
+        originalUrl: request.originalUrl,
+        path: request.path,
+        protocol: request.protocol,
+        query: request.query,
+        route: request.route,
+        secure: request.secure,
+        signedCookies: request.signedCookies,
+        stale: request.stale,
+        subdomains: request.subdomains,
+        xhr: request.xhr
+    }
+}
+function expressMethod(methods, action) {
+    if (action) {
+        methods.forEach(method => {
+            app[action === "del" ? "delete" : action](method.url, function (req, res) {
+                FluidFunc.start(method.func, {
+                    ...createExpressRequest(req)
+                }).then(({ status, headers, body }) => {
+                    if (headers) {
+                        Object.keys(headers()).forEach(field => {
+                            res.header(field, headers(field));
+                        });
+                    }
+                    if (status) {
+                        res.status(status());
+                    }
+                    if (body) {
+                        res.send(body());
+                    } else {
+                        res.send({});
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    res.status(500).send({ error: error.message });
+                });
+            });
+        });
+    }
+}
 
 FluidFunc.create(EXPRESS_SERVER_CONNECT_MULTIPARTY)
     .onStart(({ express_tempDir }) => {
